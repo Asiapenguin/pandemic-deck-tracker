@@ -1,0 +1,7 @@
+{
+  "name": "pandemic-deck-tracker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
