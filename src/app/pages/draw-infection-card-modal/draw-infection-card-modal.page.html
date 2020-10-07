@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pick {{ numCards }} Card(s) </ion-title>
+    <ion-buttons slot="start">
+      <ion-button shape="icon-only" (click)="close()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-infection-card-select
+    *ngFor="let c of cardDistribution"
+    [card]="c"
+    (click)="selectCard($event)"
+  ></app-infection-card-select>
+</ion-content>
+
+<ion-footer translucent class="ion-no-border">
+  <ion-toolbar>
+    <ion-button expand="full" shape="round" (click)="drawCards()">Confirm</ion-button>
+  </ion-toolbar>
+</ion-footer>

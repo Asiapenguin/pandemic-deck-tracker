@@ -33,6 +33,9 @@
             ],
             "styles": [
               {
+                "input": "src/theme/pandemic.scss"
+              },
+              {
                 "input": "src/theme/variables.scss"
               },
               {

@@ -1,0 +1,244 @@
+{
+  "cards": [
+    {
+      "name": "Algiers",
+      "color": 0,
+      "connections": ["Cairo", "Istanbul", "Madrid", "Paris"]
+    },
+    {
+      "name": "Baghdad",
+      "color": 0,
+      "connections": ["Cairo", "Istanbul", "Karachi", "Riyadh", "Tehran"]
+    },
+    {
+      "name": "Cairo",
+      "color": 0,
+      "connections": ["Algiers", "Baghdad", "Istanbul", "Khartoum", "Riyadh"]
+    },
+    {
+      "name": "Chennai",
+      "color": 0,
+      "connections": ["Bangkok", "Delhi", "Jakarta", "Kolkata", "Mumbai"]
+    },
+    {
+      "name": "Delhi",
+      "color": 0,
+      "connections": ["Chennai", "Karachi", "Kolkata", "Mumbai", "Tehran"]
+    },
+    {
+      "name": "Istanbul",
+      "color": 0,
+      "connections": ["Algiers", "Baghdad", "Cairo", "Milan", "Moscow"]
+    },
+    {
+      "name": "Karachi",
+      "color": 0,
+      "connections": ["Baghdad", "Delhi", "Mumbai", "Riyadh", "Tehran"]
+    },
+    {
+      "name": "Kolkata",
+      "color": 0,
+      "connections": ["Bangkok", "Chennai", "Delhi", "Hong Kong"]
+    },
+    {
+      "name": "Moscow",
+      "color": 0,
+      "connections": ["Istanbul", "St. Petersburg", "Tehran"]
+    },
+    {
+      "name": "Mumbai",
+      "color": 0,
+      "connections": ["Chennai", "Delhi", "Karachi"]
+    },
+    {
+      "name": "Riyadh",
+      "color": 0,
+      "connections": ["Baghdad", "Cairo", "Karachi"]
+    },
+    {
+      "name": "Tehran",
+      "color": 0,
+      "connections": ["Baghdad", "Delhi", "Karachi", "Moscow"]
+    },
+    {
+      "name": "Atlanta",
+      "color": 1,
+      "connections": ["Chicago", "Miami", "Washington"]
+    },
+    {
+      "name": "Chicago",
+      "color": 1,
+      "connections": ["Atlanta", "Los Angeles", "Mexico City", "Montreal", "San Francisco"]
+    },
+    {
+      "name": "Essen",
+      "color": 1,
+      "connections": ["London", "Milan", "Paris", "St. Petersburg"]
+    },
+    {
+      "name": "London",
+      "color": 1,
+      "connections": ["Essen", "Madrid", "New York", "Paris"]
+    },
+    {
+      "name": "Madrid",
+      "color": 1,
+      "connections": ["Algiers", "London", "New York", "Paris", "São Paulo"]
+    },
+    {
+      "name": "Milan",
+      "color": 1,
+      "connections": ["Essen", "Istanbul", "Paris"]
+    },
+    {
+      "name": "Montréal",
+      "color": 1,
+      "connections": ["Chicago", "New York", "Washington"]
+    },
+    {
+      "name": "New York",
+      "color": 1,
+      "connections": ["London", "Madrid", "Montréal", "Washington"]
+    },
+    {
+      "name": "Paris",
+      "color": 1,
+      "connections": ["Algiers", "Essen", "London", "Madrid", "Milan"]
+    },
+    {
+      "name": "San Francisco",
+      "color": 1,
+      "connections": ["Chicago", "Los Angeles", "Manila", "Tokyo"]
+    },
+    {
+      "name": "St. Petersburg",
+      "color": 1,
+      "connections": ["Essen", "Istanbul", "Moscow"]
+    },
+    {
+      "name": "Washington",
+      "color": 1,
+      "connections": ["Atlanta", "Miami", "Montréal", "New York"]
+    },
+    {
+      "name": "Bangkok",
+      "color": 2,
+      "connections": ["Chennai", "Ho Chi Minh City", "Hong Kong", "Jakarta", "Kolkata"]
+    },
+    {
+      "name": "Beijing",
+      "color": 2,
+      "connections": ["Shanghai", "Seoul"]
+    },
+    {
+      "name": "Ho Chi Minh City",
+      "color": 2,
+      "connections": ["Bangkok", "Hong Kong", "Jakarta", "Manila"]
+    },
+    {
+      "name": "Hong Kong",
+      "color": 2,
+      "connections": ["Bangkok", "Ho Chi Minh City", "Kolkata", "Manila", "Shanghai", "Taipei"]
+    },
+    {
+      "name": "Jakarta",
+      "color": 2,
+      "connections": ["Bangkok", "Chennai", "Ho Chi Minh City", "Sydney"]
+    },
+    {
+      "name": "Manila",
+      "color": 2,
+      "connections": ["Ho Chi Minh City", "Hong Kong", "San Francisco", "Sydney", "Taipei"]
+    },
+    {
+      "name": "Osaka",
+      "color": 2,
+      "connections": ["Taipei", "Tokyo"]
+    },
+    {
+      "name": "Shanghai",
+      "color": 2,
+      "connections": ["Beijing", "Hong Kong", "Seoul", "Taipei", "Tokyo"]
+    },
+    {
+      "name": "Seoul",
+      "color": 2,
+      "connections": ["Beijing", "Shanghai", "Tokyo"]
+    },
+    {
+      "name": "Sydney",
+      "color": 2,
+      "connections": ["Jakarta", "Los Angeles", "Manila"]
+    },
+    {
+      "name": "Taipei",
+      "color": 2,
+      "connections": ["Hong Kong", "Manila", "Osaka", "Shanghai"]
+    },
+    {
+      "name": "Tokyo",
+      "color": 2,
+      "connections": ["Osaka", "San Francisco", "Seoul", "Shanghai"]
+    },
+    {
+      "name": "Bogotá",
+      "color": 3,
+      "connections": ["Buenos Aires", "Lima", "Mexico City", "Miami", "São Paulo"]
+    },
+    {
+      "name": "Buenos Aires",
+      "color": 3,
+      "connections": ["Bogotá", "São Paulo"]
+    },
+    {
+      "name": "Johannesburg",
+      "color": 3,
+      "connections": ["Khartoum", "Kinshasa"]
+    },
+    {
+      "name": "Khartoum",
+      "color": 3,
+      "connections": ["Cairo", "Johannesburg", "Kinshasa", "Lagos"]
+    },
+    {
+      "name": "Kinshasa",
+      "color": 3,
+      "connections": ["Johannesburg", "Khartoum", "Lagos"]
+    },
+    {
+      "name": "Lagos",
+      "color": 3,
+      "connections": ["Khartoum", "Kinshasa", "São Paulo"]
+    },
+    {
+      "name": "Lima",
+      "color": 3,
+      "connections": ["Bogotá", "Mexico City", "Santiago"]
+    },
+    {
+      "name": "Los Angeles",
+      "color": 3,
+      "connections": ["Chicago", "Mexico City", "San Francisco", "Sydney"]
+    },
+    {
+      "name": "Miami",
+      "color": 3,
+      "connections": ["Atlanta", "Bogotá", "Mexico City", "Washington"]
+    },
+    {
+      "name": "Mexico City",
+      "color": 3,
+      "connections": ["Bogotá", "Chicago", "Lima", "Los Angeles", "Miami"]
+    },
+    {
+      "name": "Santiago",
+      "color": 3,
+      "connections": ["Lima"]
+    },
+    {
+      "name": "São Paulo",
+      "color": 3,
+      "connections": ["Bogotá", "Buenos Aires", "Lagos", "Madrid"]
+    }
+  ]
+}

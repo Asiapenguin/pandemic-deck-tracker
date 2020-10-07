@@ -1,0 +1,12 @@
+<div class="card" *ngIf="card">
+  <ion-item slot="none" [class.selected]="card.selectOrder">
+    <span class="ion-margin-end"
+      [class.black-card-icon]="card.color === Color.BLACK"
+      [class.blue-card-icon]="card.color === Color.BLUE"
+      [class.red-card-icon]="card.color === Color.RED"
+      [class.yellow-card-icon]="card.color === Color.YELLOW"
+    ></span>
+    <ion-label>{{ card.name }}</ion-label>
+    <ion-text>{{ card.selectOrder }}</ion-text>
+  </ion-item>
+</div>

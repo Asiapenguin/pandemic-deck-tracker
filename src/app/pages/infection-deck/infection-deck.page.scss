@@ -1,0 +1,16 @@
+.unknown-cards {
+  border-style: solid;  
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-color: black;
+  border-top-style: none;
+  border-width: 2px;
+}
+
+.discarded-cards {
+  border-style: solid;  
+  border-radius: 5px;
+  border-color: black;
+  border-width: 2px;
+  --padding-start: 0px;
+}

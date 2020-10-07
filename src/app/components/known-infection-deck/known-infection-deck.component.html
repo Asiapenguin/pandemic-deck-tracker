@@ -1,0 +1,14 @@
+<div class="ion-margin-horizontal ion-padding">
+  <div *ngIf="knownCardsWithOrderKeys.length > 0">
+    <div class="known-cards" *ngFor="let orderGroup of knownCardsWithOrderKeys">
+      <div class="ion-padding" *ngIf="knownCardsWithOrder[orderGroup].type == KnownType.RANDOM">
+        <ion-text>Random 1 of</ion-text> 
+        <app-infection-card *ngFor="let c of knownCardsWithOrder[orderGroup].cards" [card]="c"></app-infection-card>
+      </div>
+      <div *ngIf="knownCardsWithOrder[orderGroup].type == KnownType.ORDERED">
+        <app-infection-card *ngFor="let c of knownCardsWithOrder[orderGroup].cards" [card]="c"></app-infection-card>
+      </div>
+    </div>
+  </div>
+  <ion-text *ngIf="knownCardsWithOrderKeys.length == 0">No Known Cards</ion-text>
+</div>

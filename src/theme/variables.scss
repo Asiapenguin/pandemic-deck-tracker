@@ -74,6 +74,39 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  /** Pandemic Colors **/
+  /** Black **/
+  --ion-color-black: #3b3f40;
+  --ion-color-black-rgb: 59, 63, 64;
+  --ion-color-black-contrast: #ffffff;
+  --ion-color-black-contrast-rgb: 255, 255, 255;
+  --ion-color-black-shade: #2f3233;
+  --ion-color-black-tint: #4a4f50;
+
+  /** Blue **/
+  --ion-color-blue: #2a3795;
+  --ion-color-blue-rgb: 42, 55, 149;
+  --ion-color-blue-contrast: #ffffff;
+  --ion-color-blue-contrast-rgb: 255, 255, 255;
+  --ion-color-blue-shade: #222c77;
+  --ion-color-blue-tint: #3445ba;
+
+  /** Red **/
+  --ion-color-red: #dd2723;
+  --ion-color-red-rgb: 221, 39, 35;
+  --ion-color-red-contrast: #ffffff;
+  --ion-color-red-contrast-rgb: 255, 255, 255;
+  --ion-color-red-shade: #b11f1b;
+  --ion-color-red-tint: #e65d5a;
+
+    /** Yellow **/
+    --ion-color-yellow: #ffcd2c;
+    --ion-color-yellow-rgb: 255, 205, 44;
+    --ion-color-yellow-contrast: #ffffff;
+    --ion-color-yellow-contrast-rgb: 255, 255, 255;
+    --ion-color-yellow-shade: #efb700;
+    --ion-color-yellow-tint: #ffdf77;
 }
 
 @media (prefers-color-scheme: dark) {

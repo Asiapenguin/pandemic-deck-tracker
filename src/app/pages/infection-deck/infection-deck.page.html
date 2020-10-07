@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-icon slot="icon-only" name="reload-sharp"></ion-icon> -->
+      <ion-button (click)="handleNewGame()">New Game</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12" class="ion-text-center">
+      <app-button
+        [iconName]="INFECT_ICON_NAME"
+        [buttonName]="INFECT_TITLE"
+        [type]="CardType.INFECT"
+        (click)="handleInfect()"
+      ></app-button>
+      <app-button
+        [iconName]="EPIDEMIC_ICON_NAME"
+        [buttonName]="EPIDEMIC_TITLE"
+        [type]="CardType.EPIDEMIC"
+        (click)="handleEpidemic()"
+      ></app-button>
+      <app-button
+        [iconName]="FORECAST_ICON_NAME"
+        [buttonName]="FORECAST_TITLE"
+        [type]="CardType.FORECAST"
+        (click)="handleForecast()"
+      ></app-button>
+      <app-button
+        [iconName]="RESILIENT_POPULATION_ICON_NAME"
+        [buttonName]="RESILIENT_POPULATION_TITLE"
+        [type]="CardType.RESILIENT_POPULATION"
+        (click)="handleResilientPopulation()"
+      ></app-button>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12" class="ion-text-center">
+      <ion-text>Epidemic Count: {{ epidemicCount }}</ion-text>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12" class="ion-text-center">
+      <ion-segment (ionChange)="changeTabOne($event)" value="{{activeTabOne}}">
+        <ion-segment-button value="known">
+          <ion-label>Known</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="unknown">
+          <ion-label>Unknown</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-col>
+  </ion-row>
+  <div class="known ion-text-center ion-align-items-center" *ngIf="activeTabOne == 'known'">
+    <app-known-infection-deck [knownCards]="knownCards"></app-known-infection-deck>
+  </div>
+  <div class="unknown ion-text-center ion-align-items-center" *ngIf="activeTabOne == 'unknown'">
+    <app-infection-card-random [cardDistribution]="unknownCards"></app-infection-card-random>
+  </div>
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12" class="ion-text-center">
+      <ion-segment (ionChange)="changeTabTwo($event)" value="{{activeTabTwo}}">
+        <ion-segment-button value="discarded">
+          <ion-label>Discarded</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="removed">
+          <ion-label>Removed</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-col>
+  </ion-row>
+  <div class="discarded ion-padding ion-text-center ion-align-items-center" *ngIf="activeTabTwo == 'discarded'">
+    <app-infection-card *ngFor="let c of discardedCards" [card]="c"></app-infection-card>
+    <ion-text *ngIf="discardedCards.length == 0">No Discarded Cards</ion-text>
+  </div>
+  <div class="removed ion-padding ion-text-center ion-align-items-center" *ngIf="activeTabTwo == 'removed'">
+    <app-infection-card *ngFor="let c of removedCards" [card]="c"></app-infection-card>
+    <ion-text *ngIf="removedCards.length == 0">No Removed Cards</ion-text>
+  </div>
+</ion-content>
