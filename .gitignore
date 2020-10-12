@@ -32,4 +32,5 @@ npm-debug.log*
 /resources
 
 *.keystore
-*.apk
+app-release-unsigned.apk
+app-release.apk
