@@ -1,7 +1,8 @@
 {
   "name": "pandemic-deck-tracker",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular",
   "id": "0ff8c072"

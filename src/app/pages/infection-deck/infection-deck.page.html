@@ -12,6 +12,12 @@
   <ion-row class="ion-align-items-center">
     <ion-col size="12" class="ion-text-center">
       <app-button
+        [iconName]="SETUP_ICON_NAME"
+        [buttonName]="SETUP_TITLE"
+        [type]="CardType.SETUP"
+        (click)="handleSetup()"
+      ></app-button>
+      <app-button
         [iconName]="INFECT_ICON_NAME"
         [buttonName]="INFECT_TITLE"
         [type]="CardType.INFECT"

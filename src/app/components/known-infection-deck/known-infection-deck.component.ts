@@ -13,6 +13,7 @@ export class KnownInfectionDeckComponent implements OnInit {
 
   knownCardsWithOrder: object;
   knownCardsWithOrderKeys: string[];
+  knownCardsWithOrderLength: number;
 
   KnownType = KnownType;
 
@@ -35,6 +36,7 @@ export class KnownInfectionDeckComponent implements OnInit {
       }
     }
     this.knownCardsWithOrderKeys = Object.keys(this.knownCardsWithOrder);
+    console.log(this.knownCardsWithOrder);
   }
 
 }

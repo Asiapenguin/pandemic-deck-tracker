@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ModalController } from "@ionic/angular";
-import { DEFAULT_TITLE, EPIDEMIC_TITLE, FORECAST_TITLE, INFECT_TITLE, RESILIENT_POPULATION_TITLE } from "../constants/pandemic-constants";
+import { DEFAULT_TITLE, EPIDEMIC_TITLE, FORECAST_TITLE, INFECT_TITLE, RESILIENT_POPULATION_TITLE, SETUP_TITLE } from "../constants/pandemic-constants";
 import { Card } from "../models/card";
 import { CardType } from "../models/cardType";
 import { DrawInfectionCardModalPage } from "../pages/draw-infection-card-modal/draw-infection-card-modal.page";
@@ -33,6 +33,10 @@ export class ModalService {
       case CardType.RESILIENT_POPULATION:
         cardDistribution = this.infectionDeckService.getDiscardedCards();
         title = RESILIENT_POPULATION_TITLE;
+        break;
+      case CardType.SETUP:
+        cardDistribution = this.infectionDeckService.getCardsInDeck();
+        title = SETUP_TITLE;
         break;
       default:
         cardDistribution = [];

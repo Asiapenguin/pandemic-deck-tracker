@@ -1,10 +1,11 @@
-import { Injectable, ɵConsole } from "@angular/core";
+import { Injectable } from "@angular/core";
 import cardsJson from "../../data/cards.json";
 import {
   DEFAULT_DRAW_NUMBER,
   EPIDEMIC_DRAW_NUMBER,
   FORECAST_DRAW_NUMBER,
   RESILIENT_POPULATION_DRAW_NUMBER,
+  SETUP_DRAW_NUMBER,
 } from "../constants/pandemic-constants";
 import { Card } from "../models/card";
 import { CardType } from "../models/cardType";
@@ -145,6 +146,8 @@ export class InfectionDeckService {
         return FORECAST_DRAW_NUMBER;
       case CardType.RESILIENT_POPULATION:
         return RESILIENT_POPULATION_DRAW_NUMBER;
+      case CardType.SETUP:
+        return SETUP_DRAW_NUMBER;
       case CardType.INFECT:
         return epidemicCountToInfectNumber[this.epidemicCount];
       default:

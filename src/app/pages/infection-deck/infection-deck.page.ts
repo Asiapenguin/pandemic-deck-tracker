@@ -7,7 +7,9 @@ import {
   EPIDEMIC_ICON_NAME,
   INFECT_ICON_NAME,
   FORECAST_ICON_NAME,
-  RESILIENT_POPULATION_ICON_NAME
+  RESILIENT_POPULATION_ICON_NAME,
+  SETUP_TITLE,
+  SETUP_ICON_NAME,
 } from "src/app/constants/pandemic-constants";
 import { Card } from "src/app/models/card";
 import { CardType } from "src/app/models/cardType";
@@ -24,7 +26,7 @@ export class InfectionDeckPage implements OnInit {
 
   activeTabOne = "unknown";
   activeTabTwo = "discarded";
-  
+
   knownCards: Card[] = [];
   unknownCards: Card[] = [];
   discardedCards: Card[] = [];
@@ -35,16 +37,18 @@ export class InfectionDeckPage implements OnInit {
   INFECT_TITLE = INFECT_TITLE;
   FORECAST_TITLE = FORECAST_TITLE;
   RESILIENT_POPULATION_TITLE = RESILIENT_POPULATION_TITLE;
+  SETUP_TITLE = SETUP_TITLE;
   EPIDEMIC_ICON_NAME = EPIDEMIC_ICON_NAME;
   INFECT_ICON_NAME = INFECT_ICON_NAME;
   FORECAST_ICON_NAME = FORECAST_ICON_NAME;
   RESILIENT_POPULATION_ICON_NAME = RESILIENT_POPULATION_ICON_NAME;
+  SETUP_ICON_NAME = SETUP_ICON_NAME;
 
   CardType = CardType;
 
   constructor(
     private infectionDeckService: InfectionDeckService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -69,6 +73,16 @@ export class InfectionDeckPage implements OnInit {
 
   changeTabTwo(event: any) {
     this.activeTabTwo = event.target.value;
+  }
+
+  async handleSetup() {
+    let modal = await this.modalService.createModal(CardType.SETUP);
+
+    modal.onDidDismiss().then((_) => {
+      this.refreshCards();
+    });
+
+    return await modal.present();
   }
 
   async handleInfect() {
@@ -107,7 +121,7 @@ export class InfectionDeckPage implements OnInit {
     modal.onDidDismiss().then((res) => {
       this.infectionDeckService.markCardsAsKnownOrdered(res.data.cardsToDraw);
       this.refreshCards();
-    })
+    });
 
     return await modal.present();
   }
@@ -117,7 +131,7 @@ export class InfectionDeckPage implements OnInit {
 
     modal.onDidDismiss().then((_) => {
       this.refreshCards();
-    })
+    });
 
     return await modal.present();
   }
