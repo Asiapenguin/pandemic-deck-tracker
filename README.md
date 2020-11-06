@@ -14,13 +14,10 @@ This app is built for those who play the [Pandemic](https://en.wikipedia.org/wik
 ```
 ionic cordova build --release android
 ```
+Move new unsigned apk from platforms/android/app/build/outputs/apk/release into project root directory.
 ```
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore app-release-unsigned.apk alias_name
 ```
 ```
-cd ~/AppData/Local/Android/sdk/build-tools/30.0.1
-```
-```
-./zipalign -v 4 /c/Projects/pandemic-deck-tracker/app-release-unsigned.a 
-pk /c/Projects/pandemic-deck-tracker/app-release.apk
+C:/Users/NK/AppData/Local/Android/sdk/build-tools/30.0.1/zipalign.exe -v 4 app-release-unsigned.apk app-release.apk
 ```

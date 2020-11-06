@@ -18,7 +18,7 @@ export class DrawInfectionCardModalPage implements OnInit {
   @Input() numCards: number;
   @Input() cardDistribution: Card[];
 
-  currentNumCards: number;
+  selectedCards: Card[] = [];
 
   constructor(
     private modalService: ModalService,
@@ -26,9 +26,7 @@ export class DrawInfectionCardModalPage implements OnInit {
     private toastService: ToastService
   ) {}
 
-  ngOnInit() {
-    this.currentNumCards = 1;
-  }
+  ngOnInit() {}
 
   close() {
     this.cardDistribution.forEach((card) => (card.selectOrder = null));
@@ -42,34 +40,35 @@ export class DrawInfectionCardModalPage implements OnInit {
     if (!selected) {
       return;
     }
-    
-    if (selected.selectOrder != null) {
-      selected.selectOrder = null;
-      this.currentNumCards--;
+
+    let index = this.selectedCards.indexOf(selected);
+
+    if (index < 0) {
+      selected.selectOrder = this.selectedCards.length + 1;
+      this.selectedCards.push(selected);
     } else {
-      selected.selectOrder = this.currentNumCards;
-      this.currentNumCards++;
+      selected.selectOrder = null;
+      this.selectedCards.splice(index, 1);
+      this.selectedCards.forEach((card) => {
+        card.selectOrder = this.selectedCards.indexOf(card) + 1;
+      });
     }
   }
 
   drawCards() {
-    let cardsToDraw = this.cardDistribution
-      .filter((card) => card.selectOrder != null)
-      .sort((a, b) => (a.selectOrder > b.selectOrder ? 1 : -1));
-
-    if (cardsToDraw.length != this.numCards) {
+    if (this.selectedCards.length != this.numCards) {
       this.toastService.openToast(WRONG_NUMBER_CARDS_SELECTED, ToastType.ERROR);
     } else {
       if (this.type == CardType.RESILIENT_POPULATION) {
-        this.infectionDeckService.removeCards(cardsToDraw);
+        this.infectionDeckService.removeCards(this.selectedCards);
       } else if (this.type != CardType.FORECAST) {
-        this.infectionDeckService.discardCards(cardsToDraw);
+        this.infectionDeckService.discardCards(this.selectedCards);
       }
 
-      this.infectionDeckService.clearSelectOrder(cardsToDraw);
+      this.infectionDeckService.clearSelectOrder(this.selectedCards);
 
       this.modalService.dismissModal({
-        cardsToDraw,
+        selectedCards: this.selectedCards,
       });
     }
   }
