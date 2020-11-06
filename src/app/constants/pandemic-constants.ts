@@ -1,5 +1,6 @@
+export const APP_TITLE = "Deck Tracker";
+
 // TODO: Change to reflect number of epidemics drawn already
-export const INFECT_DRAW_NUMBER = 2;
 export const FORECAST_DRAW_NUMBER = 6;
 export const RESILIENT_POPULATION_DRAW_NUMBER = 1;
 export const EPIDEMIC_DRAW_NUMBER = 1;

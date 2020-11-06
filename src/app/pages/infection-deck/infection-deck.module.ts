@@ -14,6 +14,7 @@ import { KnownInfectionDeckComponent } from "src/app/components/known-infection-
 import { UnknownInfectionDeckComponent } from "../unknown-infection-deck/unknown-infection-deck.component";
 import { DiscardedDeckComponent } from "../discarded-deck/discarded-deck.component";
 import { RemovedDeckComponent } from "../removed-deck/removed-deck.component";
+import { HeaderComponent } from "src/app/components/header/header.component";
 
 @NgModule({
   imports: [
@@ -24,13 +25,14 @@ import { RemovedDeckComponent } from "../removed-deck/removed-deck.component";
   ],
   declarations: [
     ButtonComponent,
+    DiscardedDeckComponent,
+    HeaderComponent,
     InfectionCardComponent,
     InfectionCardRandomComponent,
     InfectionDeckPage,
     KnownInfectionDeckComponent,
+    RemovedDeckComponent,
     UnknownInfectionDeckComponent,
-    DiscardedDeckComponent,
-    RemovedDeckComponent
   ]
 })
 export class InfectionDeckPageModule {}

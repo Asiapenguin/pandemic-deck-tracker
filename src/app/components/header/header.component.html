@@ -1,0 +1,9 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!actionsExist" (click)="handleUndo()">Undo</ion-button>
+      <ion-button (click)="handleNewGame()">New Game</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>

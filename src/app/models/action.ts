@@ -6,7 +6,8 @@ export class Action {
   oldDeck: Card[];
   newDeck: Card[];
 
-  constructor(action: ActionType) {
+  constructor(action: ActionType, oldDeck: Card[]) {
     this.action = action;
+    this.oldDeck = oldDeck;
   }
 }

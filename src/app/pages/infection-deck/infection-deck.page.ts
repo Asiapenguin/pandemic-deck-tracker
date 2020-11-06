@@ -11,9 +11,9 @@ import {
   SETUP_TITLE,
   SETUP_ICON_NAME,
 } from "src/app/constants/pandemic-constants";
-import { Action } from "src/app/models/action";
 import { Card } from "src/app/models/card";
 import { CardType } from "src/app/models/cardType";
+import { ActionService } from "src/app/services/action.service";
 import { InfectionDeckService } from "src/app/services/infection-deck.service";
 import { ModalService } from "src/app/services/modal.service";
 
@@ -23,10 +23,6 @@ import { ModalService } from "src/app/services/modal.service";
   styleUrls: ["./infection-deck.page.scss"],
 })
 export class InfectionDeckPage implements OnInit {
-  title = "Deck Tracker";
-
-  activeTabOne = "unknown";
-  activeTabTwo = "discarded";
 
   knownCards: Card[] = [];
   unknownCards: Card[] = [];
@@ -49,10 +45,16 @@ export class InfectionDeckPage implements OnInit {
 
   constructor(
     private infectionDeckService: InfectionDeckService,
+    private actionService: ActionService,
     private modalService: ModalService
   ) {}
 
   ngOnInit() {
+    this.refreshCards();
+    this.refreshEpidemicCount();
+  }
+
+  refreshAll() {
     this.refreshCards();
     this.refreshEpidemicCount();
   }
@@ -68,18 +70,15 @@ export class InfectionDeckPage implements OnInit {
     this.epidemicCount = this.infectionDeckService.getEpidemicCount();
   }
 
-  changeTabOne(event: any) {
-    this.activeTabOne = event.target.value;
-  }
-
-  changeTabTwo(event: any) {
-    this.activeTabTwo = event.target.value;
-  }
-
   async handleSetup() {
     let modal = await this.modalService.createModal(CardType.SETUP);
 
-    modal.onDidDismiss().then((_) => {
+    modal.onDidDismiss().then((res) => {
+      if (res.data.dismissed) {
+        return;
+      }
+
+      this.actionService.doSetup(res.data.selectedCards);
       this.refreshCards();
     });
 
@@ -94,7 +93,7 @@ export class InfectionDeckPage implements OnInit {
         return;
       }
 
-      this.infectionDeckService.doInfect(res.data.selectedCards);
+      this.actionService.doInfect(res.data.selectedCards);
       this.refreshCards();
     });
 
@@ -109,7 +108,7 @@ export class InfectionDeckPage implements OnInit {
         return;
       }
       
-      this.infectionDeckService.doEpidemic(res.data.selectedCards);
+      this.actionService.doEpidemic(res.data.selectedCards);
       
       this.discardedCards = this.infectionDeckService.getDiscardedCards();
       this.knownCards = this.infectionDeckService.getKnownCards();
@@ -128,7 +127,7 @@ export class InfectionDeckPage implements OnInit {
         return;
       }
       
-      this.infectionDeckService.doForecast(res.data.selectedCards);
+      this.actionService.doForecast(res.data.selectedCards);
       this.refreshCards();
     });
 
@@ -143,16 +142,10 @@ export class InfectionDeckPage implements OnInit {
         return;
       }
 
-      this.infectionDeckService.doResilientPopulation(res.data.selectedCards);
+      this.actionService.doResilientPopulation(res.data.selectedCards);
       this.refreshCards();
     });
 
     return await modal.present();
-  }
-
-  handleNewGame() {
-    this.infectionDeckService.newGame();
-    this.refreshCards();
-    this.refreshEpidemicCount();
   }
 }

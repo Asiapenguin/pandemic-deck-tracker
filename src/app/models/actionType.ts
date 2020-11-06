@@ -5,4 +5,5 @@ export enum ActionType {
   INFECT = "infect",
   REMOVE = "remove",
   RESILIENT_POPULATION = "resilient population",
+  SETUP = "setup",
 }
