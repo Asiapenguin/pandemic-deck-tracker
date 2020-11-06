@@ -1,3 +1,4 @@
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Action } from "../models/action";
@@ -15,22 +16,22 @@ export class ActionService {
 
   constructor(private infectionDeckService: InfectionDeckService) {
     this.actions = [];
-    this.observableActions = new BehaviorSubject<Action[]>([]);
+    this.observableActions = new BehaviorSubject<Action[]>(Object.assign([]));
   }
 
   addAction(action: Action) {
     this.actions.push(action);
-    this.observableActions.next(this.actions);
+    this.observableActions.next(Object.assign([], this.actions));
   }
 
   clearAllActions() {
     this.actions = [];
-    this.observableActions.next([]);
+    this.observableActions.next(Object.assign([], this.actions));
   }
 
   undoLastAction() {
     let lastAction = this.actions.pop();
-    this.observableActions.next(this.actions);
+    this.observableActions.next(Object.assign([], this.actions));
     this.infectionDeckService.setDeck(lastAction.oldDeck);
   }
 
@@ -40,47 +41,41 @@ export class ActionService {
 
   doSetup(selectedCards: Card[]) {
     let action = new Action(ActionType.SETUP, this.infectionDeckService.getAllCards());
-    console.log(action.oldDeck);
+    this.addAction(action);
 
     this.infectionDeckService.discardCards(selectedCards);
-
-    this.addAction(action);
   }
 
   doInfect(selectedCards: Card[]) {
-    let action = new Action(ActionType.INFECT, this.infectionDeckService.getAllCards());
+    let action = new Action(ActionType.INFECT, selectedCards);
+    this.addAction(action);
 
     this.infectionDeckService.discardCards(selectedCards);
-
-    this.addAction(action);
   }
 
   doEpidemic(selectedCards: Card[]) {
     let action = new Action(ActionType.EPIDEMIC, this.infectionDeckService.getAllCards());
+    this.addAction(action);
     
     this.infectionDeckService.discardCards(selectedCards)
     let discardedCards = this.infectionDeckService.getDiscardedCards();
     this.infectionDeckService.markCardsAsKnownRandom(discardedCards);
     this.infectionDeckService.emptyDiscardPile();
     this.infectionDeckService.incrementEpidemicCount();
-
-    this.addAction(action);
   }
 
   doForecast(selectedCards: Card[]) {
     let action = new Action(ActionType.FORECAST, this.infectionDeckService.getAllCards());
+    this.addAction(action);
 
     this.infectionDeckService.markCardsAsKnownOrdered(selectedCards);
-
-    this.addAction(action);
   }
 
   doResilientPopulation(selectedCards: Card[]) {
     let action = new Action(ActionType.RESILIENT_POPULATION, this.infectionDeckService.getAllCards());
+    this.addAction(action);
     
     this.infectionDeckService.removeCards(selectedCards);
-
-    this.addAction(action);
   }
 
   newGame() {
