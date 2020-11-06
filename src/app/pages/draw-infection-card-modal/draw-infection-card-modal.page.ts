@@ -59,11 +59,6 @@ export class DrawInfectionCardModalPage implements OnInit {
     if (this.selectedCards.length != this.numCards) {
       this.toastService.openToast(WRONG_NUMBER_CARDS_SELECTED, ToastType.ERROR);
     } else {
-      if (this.type == CardType.RESILIENT_POPULATION) {
-        this.infectionDeckService.removeCards(this.selectedCards);
-      } else if (this.type != CardType.FORECAST) {
-        this.infectionDeckService.discardCards(this.selectedCards);
-      }
 
       this.infectionDeckService.clearSelectOrder(this.selectedCards);
 

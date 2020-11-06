@@ -36,7 +36,6 @@ export class KnownInfectionDeckComponent implements OnInit {
       }
     }
     this.knownCardsWithOrderKeys = Object.keys(this.knownCardsWithOrder);
-    console.log(this.knownCardsWithOrder);
   }
 
 }

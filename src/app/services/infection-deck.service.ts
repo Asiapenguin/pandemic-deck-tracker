@@ -7,10 +7,13 @@ import {
   RESILIENT_POPULATION_DRAW_NUMBER,
   SETUP_DRAW_NUMBER,
 } from "../constants/pandemic-constants";
+import { Action } from "../models/action";
+import { ActionType } from "../models/actionType";
 import { Card } from "../models/card";
 import { CardType } from "../models/cardType";
 import { Known } from "../models/known";
 import { KnownType } from "../models/knownType";
+import { ActionService } from "./action.service";
 
 const epidemicCountToInfectNumber = {
   0: 2,
@@ -26,24 +29,74 @@ const epidemicCountToInfectNumber = {
   providedIn: "root",
 })
 export class InfectionDeckService {
-  // Every city infection card in the game
-  private allCards: Card[] = [];
-
   // Every city infection card that we know exists on the top of the infection deck
   private cardsInDeck: Card[] = [];
 
   private epidemicCount: number = 0;
 
-  constructor() {
+  constructor(private actionService: ActionService) {
     this.processData(cardsJson.cards);
   }
 
   processData(data: any) {
     data.forEach((card: any) => {
-      this.allCards.push(new Card(card.name, card.color, card.connections));
+      this.cardsInDeck.push(new Card(card.name, card.color, card.connections));
     });
+  }
 
-    this.cardsInDeck = this.allCards;
+  doInfect(selectedCards: Card[]) {
+    let action = new Action(ActionType.INFECT);
+    action.oldDeck = this.cardsInDeck;
+
+    this.discardCards(selectedCards);
+
+    action.newDeck = this.cardsInDeck;
+    this.actionService.addAction(action);
+  }
+
+  doEpidemic(selectedCards: Card[]) {
+    let action = new Action(ActionType.EPIDEMIC);
+    action.oldDeck = this.cardsInDeck;
+    
+    this.discardCards(selectedCards)
+    let discardedCards = this.getDiscardedCards();
+    this.markCardsAsKnownRandom(discardedCards);
+    this.emptyDiscardPile();
+    this.incrementEpidemicCount();
+
+    action.newDeck = this.cardsInDeck;
+    this.actionService.addAction(action);
+  }
+
+  doForecast(selectedCards: Card[]) {
+    let action = new Action(ActionType.FORECAST);
+    action.oldDeck = this.cardsInDeck;
+
+    this.markCardsAsKnownOrdered(selectedCards);
+
+    action.newDeck = this.cardsInDeck;
+    this.actionService.addAction(action);
+  }
+
+  doResilientPopulation(selectedCards: Card[]) {
+    let action = new Action(ActionType.RESILIENT_POPULATION);
+    action.oldDeck = this.cardsInDeck;
+
+    this.removeCards(selectedCards);
+
+    action.newDeck = this.cardsInDeck;
+    this.actionService.addAction(action);
+  }
+
+  newGame() {
+    this.epidemicCount = 0;
+
+    this.cardsInDeck.map((card) => {
+      card.isDiscarded = false;
+      card.isKnown = new Known(false);
+      card.isRemoved = false;
+      card.selectOrder = null;
+    })
   }
 
   clearSelectOrder(cards: Card[]) {
@@ -56,86 +109,8 @@ export class InfectionDeckService {
     }
   }
 
-  discardCards(cards: Card[]) {
-    for (let card of cards) {
-      this.cardsInDeck.map((c) => {
-        if (c.name == card.name) {
-          c.isDiscarded = true;
-          c.isKnown = new Known(false);
-        }
-      });
-    }
-  }
-
-  removeCards(cards: Card[]) {
-    for (let card of cards) {
-      this.cardsInDeck.map((c) => {
-        if (c.name == card.name) {
-          c.isRemoved = true;
-          c.isKnown = new Known(false);
-        }
-      });
-    }
-  }
-
-  markCardsAsKnownRandom(cards: Card[]) {
-    this.incrementDeckOrder(1);
-
-    for (let card of cards) {
-      this.cardsInDeck.map((c) => {
-        if (c.name == card.name) {
-          card.isKnown = new Known(true, KnownType.RANDOM, 0);
-        }
-      });
-    }
-  }
-
-  markCardsAsKnownOrdered(cards: Card[]) {
-    let numCards = cards.length;
-    this.incrementDeckOrder(numCards);
-
-    for (let i = 0 ; i < numCards ; i++) {
-      this.cardsInDeck.map((c) => {
-        if (c.name == cards[i].name) {
-          cards[i].isKnown = new Known(true, KnownType.ORDERED, i);
-        }
-      })
-    }
-  }
-
   findCardByName(name: string): Card {
-    return this.allCards.find((card) => card.name == name);
-  }
-
-  emptyDiscardPile() {
-    this.cardsInDeck.forEach((card) => {
-      if (!card.isRemoved) {
-        card.isDiscarded = false;
-      }
-    });
-  }
-
-  incrementDeckOrder(numTimes: number) {
-    this.cardsInDeck
-      .filter((card) => card.isKnown.order != null)
-      .map((card) => {
-        card.isKnown.order = card.isKnown.order + numTimes;
-      });
-  }
-
-  incrementEpidemicCount() {
-    this.epidemicCount++;
-  }
-
-  newGame() {
-    this.epidemicCount = 0;
-
-    this.cardsInDeck.map((card) => {
-      card.isDiscarded = false;
-      card.isKnown = new Known(false);
-      card.isRemoved = false;
-      card.selectOrder = null;
-    })
+    return this.cardsInDeck.find((card) => card.name == name);
   }
 
   getNumberOfInfects(type: CardType): number {
@@ -160,7 +135,7 @@ export class InfectionDeckService {
   }
 
   getAllCards(): Card[] {
-    return this.allCards;
+    return this.cardsInDeck;
   }
 
   getKnownCards(): Card[] {
@@ -185,5 +160,80 @@ export class InfectionDeckService {
 
   getRemovedCards(): Card[] {
     return this.cardsInDeck.filter((card) => card.isRemoved == true);
+  }
+
+  private discardCards(cards: Card[]) {
+    let action = new Action(ActionType.DISCARD);
+    action.oldDeck = this.cardsInDeck;
+    for (let card of cards) {
+      this.cardsInDeck.map((c) => {
+        if (c.name == card.name) {
+          c.isDiscarded = true;
+          c.isKnown = new Known(false);
+        }
+      });
+    }
+    action.newDeck = this.cardsInDeck;
+    this.actionService.addAction(action);
+  }
+
+  private removeCards(cards: Card[]) {
+    let action = new Action(ActionType.REMOVE);
+    action.oldDeck = this.cardsInDeck;
+    for (let card of cards) {
+      this.cardsInDeck.map((c) => {
+        if (c.name == card.name) {
+          c.isRemoved = true;
+          c.isKnown = new Known(false);
+        }
+      });
+    }
+    action.newDeck = this.cardsInDeck;
+    this.actionService.addAction(action);
+  }
+
+  private markCardsAsKnownRandom(cards: Card[]) {
+    this.incrementDeckOrder(1);
+
+    for (let card of cards) {
+      this.cardsInDeck.map((c) => {
+        if (c.name == card.name) {
+          card.isKnown = new Known(true, KnownType.RANDOM, 0);
+        }
+      });
+    }
+  }
+
+  private markCardsAsKnownOrdered(cards: Card[]) {
+    let numCards = cards.length;
+    this.incrementDeckOrder(numCards);
+
+    for (let i = 0 ; i < numCards ; i++) {
+      this.cardsInDeck.map((c) => {
+        if (c.name == cards[i].name) {
+          cards[i].isKnown = new Known(true, KnownType.ORDERED, i);
+        }
+      })
+    }
+  }
+  
+  private emptyDiscardPile() {
+    this.cardsInDeck.forEach((card) => {
+      if (!card.isRemoved) {
+        card.isDiscarded = false;
+      }
+    });
+  }
+
+  private incrementDeckOrder(numTimes: number) {
+    this.cardsInDeck
+      .filter((card) => card.isKnown.order != null)
+      .map((card) => {
+        card.isKnown.order = card.isKnown.order + numTimes;
+      });
+  }
+
+  private incrementEpidemicCount() {
+    this.epidemicCount++;
   }
 }

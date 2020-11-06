@@ -11,6 +11,7 @@ import {
   SETUP_TITLE,
   SETUP_ICON_NAME,
 } from "src/app/constants/pandemic-constants";
+import { Action } from "src/app/models/action";
 import { Card } from "src/app/models/card";
 import { CardType } from "src/app/models/cardType";
 import { InfectionDeckService } from "src/app/services/infection-deck.service";
@@ -88,7 +89,12 @@ export class InfectionDeckPage implements OnInit {
   async handleInfect() {
     let modal = await this.modalService.createModal(CardType.INFECT);
 
-    modal.onDidDismiss().then((_) => {
+    modal.onDidDismiss().then((res) => {
+      if (res.data.dismissed) {
+        return;
+      }
+
+      this.infectionDeckService.doInfect(res.data.selectedCards);
       this.refreshCards();
     });
 
@@ -98,17 +104,16 @@ export class InfectionDeckPage implements OnInit {
   async handleEpidemic() {
     let modal = await this.modalService.createModal(CardType.EPIDEMIC);
 
-    modal.onDidDismiss().then((_) => {
-      this.refreshCards();
-
-      let knownCards = this.infectionDeckService.getDiscardedCards();
-      this.infectionDeckService.markCardsAsKnownRandom(knownCards);
-
-      this.infectionDeckService.emptyDiscardPile();
-
+    modal.onDidDismiss().then((res) => {
+      if (res.data.dismissed) {
+        return;
+      }
+      
+      this.infectionDeckService.doEpidemic(res.data.selectedCards);
+      
       this.discardedCards = this.infectionDeckService.getDiscardedCards();
       this.knownCards = this.infectionDeckService.getKnownCards();
-      this.infectionDeckService.incrementEpidemicCount();
+      this.refreshCards();
       this.refreshEpidemicCount();
     });
 
@@ -119,7 +124,11 @@ export class InfectionDeckPage implements OnInit {
     let modal = await this.modalService.createModal(CardType.FORECAST);
 
     modal.onDidDismiss().then((res) => {
-      this.infectionDeckService.markCardsAsKnownOrdered(res.data.cardsToDraw);
+      if (res.data.dismissed) {
+        return;
+      }
+      
+      this.infectionDeckService.doForecast(res.data.selectedCards);
       this.refreshCards();
     });
 
@@ -129,7 +138,12 @@ export class InfectionDeckPage implements OnInit {
   async handleResilientPopulation() {
     let modal = await this.modalService.createModal(CardType.RESILIENT_POPULATION);
 
-    modal.onDidDismiss().then((_) => {
+    modal.onDidDismiss().then((res) => {
+      if (res.data.dismissed) {
+        return;
+      }
+
+      this.infectionDeckService.doResilientPopulation(res.data.selectedCards);
       this.refreshCards();
     });
 
