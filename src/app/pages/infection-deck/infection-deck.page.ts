@@ -23,7 +23,6 @@ import { ModalService } from "src/app/services/modal.service";
   styleUrls: ["./infection-deck.page.scss"],
 })
 export class InfectionDeckPage implements OnInit {
-
   knownCards: Card[] = [];
   unknownCards: Card[] = [];
   discardedCards: Card[] = [];
@@ -50,20 +49,30 @@ export class InfectionDeckPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.refreshCards();
+    this.updateDeck();
     this.refreshEpidemicCount();
+  }
+
+  updateDeck() {
+    let that = this;
+    this.infectionDeckService.getAllCards().subscribe({
+      next(cards) {
+        that.knownCards = cards
+          .filter((card) => card.isKnown.value == true && card.isDiscarded == false)
+          .sort((a, b) => (a.isKnown.order > b.isKnown.order ? 1 : -1));
+        that.unknownCards = cards.filter(
+          (card) => card.isKnown.value == false && card.isDiscarded == false
+        );
+        that.discardedCards = cards.filter(
+          (card) => card.isDiscarded == true && card.isRemoved == false
+        );
+        that.removedCards = cards.filter((card) => card.isRemoved == true);
+      },
+    });
   }
 
   refreshAll() {
-    this.refreshCards();
     this.refreshEpidemicCount();
-  }
-
-  refreshCards() {
-    this.knownCards = this.infectionDeckService.getKnownCards();
-    this.unknownCards = this.infectionDeckService.getUnknownCards();
-    this.discardedCards = this.infectionDeckService.getDiscardedCards();
-    this.removedCards = this.infectionDeckService.getRemovedCards();
   }
 
   refreshEpidemicCount() {
@@ -79,7 +88,6 @@ export class InfectionDeckPage implements OnInit {
       }
 
       this.actionService.doSetup(res.data.selectedCards);
-      this.refreshCards();
     });
 
     return await modal.present();
@@ -94,7 +102,6 @@ export class InfectionDeckPage implements OnInit {
       }
 
       this.actionService.doInfect(res.data.selectedCards);
-      this.refreshCards();
     });
 
     return await modal.present();
@@ -107,12 +114,8 @@ export class InfectionDeckPage implements OnInit {
       if (res.data.dismissed) {
         return;
       }
-      
+
       this.actionService.doEpidemic(res.data.selectedCards);
-      
-      this.discardedCards = this.infectionDeckService.getDiscardedCards();
-      this.knownCards = this.infectionDeckService.getKnownCards();
-      this.refreshCards();
       this.refreshEpidemicCount();
     });
 
@@ -126,9 +129,8 @@ export class InfectionDeckPage implements OnInit {
       if (res.data.dismissed) {
         return;
       }
-      
+
       this.actionService.doForecast(res.data.selectedCards);
-      this.refreshCards();
     });
 
     return await modal.present();
@@ -143,7 +145,6 @@ export class InfectionDeckPage implements OnInit {
       }
 
       this.actionService.doResilientPopulation(res.data.selectedCards);
-      this.refreshCards();
     });
 
     return await modal.present();

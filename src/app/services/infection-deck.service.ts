@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
 import cardsJson from "../../data/cards.json";
 import {
   DEFAULT_DRAW_NUMBER,
@@ -27,81 +28,89 @@ const epidemicCountToInfectNumber = {
 })
 export class InfectionDeckService {
   // Every city infection card that we know exists on the top of the infection deck
-  private cardsInDeck: Card[] = [];
+  private deck: Card[] = [];
+  private observableDeck: BehaviorSubject<Card[]>;
 
   private epidemicCount: number = 0;
 
   constructor() {
     this.processData(cardsJson.cards);
+    this.observableDeck = new BehaviorSubject<Card[]>(this.deck);
   }
 
   processData(data: any) {
     data.forEach((card: any) => {
-      this.cardsInDeck.push(new Card(card.name, card.color, card.connections));
+      this.deck.push(new Card(card.name, card.color, card.connections));
     });
   }
 
   discardCards(cards: Card[]) {
     for (let card of cards) {
-      this.cardsInDeck.map((c) => {
+      this.deck.map((c) => {
         if (c.name == card.name) {
           c.isDiscarded = true;
           c.isKnown = new Known(false);
         }
       });
     }
+    this.observableDeck.next(this.deck);
   }
 
   removeCards(cards: Card[]) {
     for (let card of cards) {
-      this.cardsInDeck.map((c) => {
+      this.deck.map((c) => {
         if (c.name == card.name) {
           c.isRemoved = true;
           c.isKnown = new Known(false);
         }
       });
     }
+    this.observableDeck.next(this.deck);
   }
 
   markCardsAsKnownRandom(cards: Card[]) {
     this.incrementDeckOrder(1);
 
     for (let card of cards) {
-      this.cardsInDeck.map((c) => {
+      this.deck.map((c) => {
         if (c.name == card.name) {
           card.isKnown = new Known(true, KnownType.RANDOM, 0);
         }
       });
     }
+    this.observableDeck.next(this.deck);
   }
 
   markCardsAsKnownOrdered(cards: Card[]) {
     let numCards = cards.length;
     this.incrementDeckOrder(numCards);
 
-    for (let i = 0 ; i < numCards ; i++) {
-      this.cardsInDeck.map((c) => {
+    for (let i = 0; i < numCards; i++) {
+      this.deck.map((c) => {
         if (c.name == cards[i].name) {
           cards[i].isKnown = new Known(true, KnownType.ORDERED, i);
         }
-      })
+      });
     }
+    this.observableDeck.next(this.deck);
   }
-  
+
   emptyDiscardPile() {
-    this.cardsInDeck.forEach((card) => {
+    this.deck.forEach((card) => {
       if (!card.isRemoved) {
         card.isDiscarded = false;
       }
     });
+    this.observableDeck.next(this.deck);
   }
 
   incrementDeckOrder(numTimes: number) {
-    this.cardsInDeck
+    this.deck
       .filter((card) => card.isKnown.order != null)
       .map((card) => {
         card.isKnown.order = card.isKnown.order + numTimes;
       });
+    this.observableDeck.next(this.deck);
   }
 
   incrementEpidemicCount() {
@@ -111,30 +120,34 @@ export class InfectionDeckService {
   reset() {
     this.epidemicCount = 0;
 
-    this.cardsInDeck.map((card) => {
+    this.deck.map((card) => {
       card.isDiscarded = false;
       card.isKnown = new Known(false);
       card.isRemoved = false;
       card.selectOrder = null;
-    })
+    });
+
+    this.observableDeck.next(this.deck);
   }
 
   setDeck(cards: Card[]) {
-    this.cardsInDeck = cards;
+    this.deck = cards;
+    this.observableDeck.next(cards);
   }
 
   clearSelectOrder(cards: Card[]) {
     for (let card of cards) {
-      this.cardsInDeck.map((c) => {
+      this.deck.map((c) => {
         if (c.name == card.name) {
           c.selectOrder = null;
         }
-      })
+      });
     }
+    this.observableDeck.next(this.deck);  
   }
 
   findCardByName(name: string): Card {
-    return this.cardsInDeck.find((card) => card.name == name);
+    return this.deck.find((card) => card.name == name);
   }
 
   getNumberOfInfects(type: CardType): number {
@@ -158,31 +171,29 @@ export class InfectionDeckService {
     return this.epidemicCount;
   }
 
-  getAllCards(): Card[] {
-    return this.cardsInDeck;
+  getAllCards(): Observable<Card[]> {
+    return this.observableDeck.asObservable();
   }
 
-  getKnownCards(): Card[] {
-    return this.cardsInDeck
-      .filter((card) => card.isKnown.value == true && card.isDiscarded == false)
-      .sort((a, b) => (a.isKnown.order > b.isKnown.order ? 1 : -1));
-  }
+  // getKnownCards(): Card[] {
+  //   return this.deck
+  //     .filter((card) => card.isKnown.value == true && card.isDiscarded == false)
+  //     .sort((a, b) => (a.isKnown.order > b.isKnown.order ? 1 : -1));
+  // }
 
-  getUnknownCards(): Card[] {
-    return this.cardsInDeck.filter(
-      (card) => card.isKnown.value == false && card.isDiscarded == false
-    );
-  }
+  // getUnknownCards(): Card[] {
+  //   return this.deck.filter((card) => card.isKnown.value == false && card.isDiscarded == false);
+  // }
 
-  getCardsInDeck(): Card[] {
-    return this.cardsInDeck.filter((card) => card.isDiscarded == false);
-  }
+  // getCardsInDeck(): Card[] {
+  //   return this.deck.filter((card) => card.isDiscarded == false);
+  // }
 
   getDiscardedCards(): Card[] {
-    return this.cardsInDeck.filter((card) => card.isDiscarded == true && card.isRemoved == false);
+    return this.deck.filter((card) => card.isDiscarded == true && card.isRemoved == false);
   }
 
-  getRemovedCards(): Card[] {
-    return this.cardsInDeck.filter((card) => card.isRemoved == true);
-  }
+  // getRemovedCards(): Card[] {
+  //   return this.deck.filter((card) => card.isRemoved == true);
+  // }
 }
