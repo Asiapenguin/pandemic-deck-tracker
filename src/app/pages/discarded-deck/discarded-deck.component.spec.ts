@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SettingsPage } from './settings.page';
+import { DiscardedDeckComponent } from './discarded-deck.component';
 
-describe('SettingsPage', () => {
-  let component: SettingsPage;
-  let fixture: ComponentFixture<SettingsPage>;
+describe('DiscardedDeckComponent', () => {
+  let component: DiscardedDeckComponent;
+  let fixture: ComponentFixture<DiscardedDeckComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsPage ],
+      declarations: [ DiscardedDeckComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SettingsPage);
+    fixture = TestBed.createComponent(DiscardedDeckComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -1,0 +1,9 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Discarded Cards</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <app-infection-card *ngFor="let c of discardedCards" [card]="c"></app-infection-card>
+    <ion-text *ngIf="discardedCards.length == 0">No Discarded Cards</ion-text>
+  </ion-card-content>
+</ion-card>

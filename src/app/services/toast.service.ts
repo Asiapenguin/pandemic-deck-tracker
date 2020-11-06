@@ -34,7 +34,7 @@ export class ToastService {
       color: "success",
       duration: this.duration,
       keyboardClose: true,
-      position: "bottom",
+      position: "middle",
       message: message
     })
   }
@@ -45,7 +45,7 @@ export class ToastService {
       color: "danger",
       duration: this.duration,
       keyboardClose: true,
-      position: "bottom",
+      position: "middle",
       message: message
     })
   }
@@ -56,7 +56,7 @@ export class ToastService {
       color: "light",
       duration: this.duration,
       keyboardClose: true,
-      position: "bottom",
+      position: "middle",
       message: message
     })
   }
