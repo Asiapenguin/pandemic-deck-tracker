@@ -6,7 +6,9 @@ This app is built for those who play the [Pandemic](https://en.wikipedia.org/wik
 - Ionic v4 framework with Angular
 
 ## Roadmap
-- Undo button
+- Graphical updates (make everything look prettier)
+- Testing app on different phone sizes
+- Releasing onto Google Play Store and App Store
 
 ## Notes for development
 
