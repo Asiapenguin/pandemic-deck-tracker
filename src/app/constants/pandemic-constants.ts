@@ -1,6 +1,5 @@
 export const APP_TITLE = "Deck Tracker";
 
-// TODO: Change to reflect number of epidemics drawn already
 export const FORECAST_DRAW_NUMBER = 6;
 export const RESILIENT_POPULATION_DRAW_NUMBER = 1;
 export const EPIDEMIC_DRAW_NUMBER = 1;
@@ -19,6 +18,9 @@ export const RESILIENT_POPULATION_ICON_NAME = "people-sharp";
 export const INFECT_ICON_NAME = "skull-sharp";
 export const EPIDEMIC_ICON_NAME = "alert-sharp";
 export const SETUP_ICON_NAME = "checkmark-sharp";
+
+/** Toast */
+export const DEFAULT_DURATION = 2000;
 
 /** Errors */
 export const WRONG_NUMBER_CARDS_SELECTED = "Wrong number of cards selected!";

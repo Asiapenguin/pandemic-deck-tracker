@@ -1,4 +1,4 @@
-import { KnownType } from "./knownType"
+import { KnownType } from "./knownType";
 
 export class Known {
   value: boolean;

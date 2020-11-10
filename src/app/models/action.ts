@@ -2,13 +2,11 @@ import { ActionType } from "./actionType";
 import { Card } from "./card";
 
 export class Action {
-  action: ActionType
-  oldDeck: Card[];
-  newDeck: Card[];
+  type: ActionType;
+  data: any;
 
-  constructor(action: ActionType, oldDeck: Card[]) {
-    console.log("olddeck:", oldDeck)
-    this.action = action;
-    this.oldDeck = oldDeck;
+  constructor(type: ActionType, data: any) {
+    this.type = type;
+    this.data = data;
   }
 }
