@@ -18,8 +18,8 @@ ionic cordova build --release android
 ```
 Move new unsigned apk from platforms/android/app/build/outputs/apk/release into project root directory.
 ```
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore app-release-unsigned.apk alias_name
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore pandemic-deck-tracker-unsigned.apk alias_name
 ```
 ```
-C:/Users/NK/AppData/Local/Android/sdk/build-tools/30.0.1/zipalign.exe -v 4 app-release-unsigned.apk app-release.apk
+C:/Users/NK/AppData/Local/Android/sdk/build-tools/30.0.1/zipalign.exe -v 4 pandemic-deck-tracker-unsigned.apk pandemic-deck-tracker.apk
 ```

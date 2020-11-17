@@ -34,3 +34,4 @@ npm-debug.log*
 *.keystore
 app-release-unsigned.apk
 app-release.apk
+pandemic-deck-tracker-unsigned.apk
